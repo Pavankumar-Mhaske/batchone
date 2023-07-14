@@ -38,7 +38,7 @@ const productSchema = new Schema(
         collectionId:{
             type:mongoose.Schema.Types.ObjectId,
             ref:"Collection"
-        }
+        },
 
     },
     {
