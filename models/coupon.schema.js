@@ -17,7 +17,7 @@ const couponSchema = new Schema(
 
 },
 {
-    timeseries:true
+    timestamps:true
 }
 
 );
