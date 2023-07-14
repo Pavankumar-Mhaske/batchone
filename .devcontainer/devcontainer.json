@@ -6,6 +6,16 @@
 	"image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye",
 	"features": {
 		"ghcr.io/devcontainers/features/aws-cli:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"vscode-icons-team.vscode-icons",
+				"esbenp.prettier-vscode",
+				"rangav.vscode-thunder-client"
+			],
+			
+		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
