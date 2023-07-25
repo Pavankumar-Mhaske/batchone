@@ -20,7 +20,15 @@ const userSchema = mongoose.Schema({
         type:String,
         required: [true, "password is required"],
         minLength: [8 , "password must be at least 8 characters"],
-        select: false,
+        select: false, 
+        /* this will not return the password in the response
+        * this is for the query to work
+        * during creation(signUp) it has no work
+        * i,e) at creation it will return all the fields with password
+        *  but during quering (login) it will work
+        * i,e) at query time it will return all the fields except the password
+        */
+
     },
     role:{
         type:String,
