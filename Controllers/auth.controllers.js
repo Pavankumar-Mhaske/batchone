@@ -2,6 +2,7 @@ import User from '../models/user.schema.js';    // Importing User Schema
 import asyncHandler from '../services/asyncHandler';   // Importing express-async-handler
 import CustomError from '../utils/customError';     // Importing Custom Error Handler
 import mailHelper from '../utils/mailHelper';       // Importing Mail Helper
+import crypto from 'crypto';                       // Importing Crypto
 
 export const cookieOptions = {
     expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days
@@ -76,7 +77,7 @@ export const login = asyncHandler(async (req, res) => {
         throw new CustomError('Please provide all fields', 400);
     }
 
-    const user = User.findOne({email}).select("+password") // select password field
+    const user = await User.findOne({email}).select("+password") // select password field
 
     if(!user){
         throw new CustomError('Invalid credentials', 401);
@@ -173,5 +174,61 @@ export const forgotPassword = asyncHandler(async (req, res) => {
 
 });
 
+// reset password
+/******************************************************
+ * 
+ * @RESET_PASSWORD
+ * @route http://localhost:5000/api/v1/auth/password/reset/:resetToken
+ * @description  user will be able to reset the password based on the url token
+ * @parameters  token from url, password and confirmPassword from body
+ * @returns User object
+ ******************************************************/
 
+export const resetPassword = asyncHandler(async (req, res) => {
+    const {token: resetToken} = req.params;
+    const { password , confirmPassword } = req.body ;
+
+
+    const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+    
+    // User.findOne({email:email})
+    const user = await User.findOne({
+        forgotPasswordToken: resetPasswordToken,
+        forgotPasswordExpiry: {$gt: Date.now()},
+    })
+
+    if(!user){
+        throw new CustomError('Token Expired or Invalid token', 400);
+    }
+
+    if(password !== confirmPassword){
+        throw new CustomError('Password does not match', 400);
+    }
+
+    // set the new password
+    user.password = password;
+    user.forgotPasswordToken = undefined;
+    user.forgotPasswordExpiry = undefined;
+
+    await user.save();
+
+    // create token and send as a response
+    const token = user.getJwtToken();
+    user.password = undefined;
+    
+
+    // helper function to send the token in the cookie
+    res.cookie("token", token, cookieOptions);
+    res.status(200).json({
+        success: true,
+        user,
+        token,
+    });
+
+
+
+});
 
