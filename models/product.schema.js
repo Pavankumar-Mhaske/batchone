@@ -16,13 +16,14 @@ const productSchema = new Schema(
         },
         description:{
             // use some form of the editor - personal assignments
-            type:Number,
+            type:String,
         },
         photos:[
             {
                 secure_url:{
                     type:String,
                     required: true,
+                    // images can be stored in cloudinary, firebase, aws, etc
                 }
             }
         ],
@@ -37,7 +38,7 @@ const productSchema = new Schema(
 
         collectionId:{
             type:mongoose.Schema.Types.ObjectId,
-            ref:"Collection"
+            ref:"Collection",
         },
 
     },
