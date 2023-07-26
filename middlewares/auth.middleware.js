@@ -21,6 +21,10 @@ export const isLoggedIn = asyncHandler(async (req, res, next) => {
     }
 
     try {
+        const decodedJwtPayload =  JWT.verify(token, config.JWT_SECRET);
+        // id, find user based on id, and attach user to req object
+        req.user = await User.findById(decodedJwtPayload.id, "name email role");
+        next();
         
     } catch (error) {
         throw new CustomError("something went wrong! Not authorized to access this route", 401);
