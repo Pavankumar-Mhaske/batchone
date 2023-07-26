@@ -229,6 +229,7 @@ export const resetPassword = asyncHandler(async (req, res) => {
     });
 });
 
+TODO: create a controller for change the password 
 
 // controller for getUser Profile
 /******************************************************
@@ -251,6 +252,6 @@ export const getUserProfile = asyncHandler(async (req, _res) => {
         success: true,
         user,
     });
-    
+
 });
 

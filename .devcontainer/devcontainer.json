@@ -12,7 +12,8 @@
 			"extensions": [
 				"vscode-icons-team.vscode-icons",
 				"esbenp.prettier-vscode",
-				"rangav.vscode-thunder-client"
+				"rangav.vscode-thunder-client",
+				"wayou.vscode-todo-highlight"
 			],
 			
 		}
