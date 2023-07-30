@@ -162,5 +162,16 @@ export const getProductById = asyncHandler(async (req, res) => {
             }
         });
 
+// assignments to read 
 
+/*
+        1.model.aggregate( [{}, {}, {}] )  // read about this
+        2. mongodb -> 
+        $ group 
+        $ push 
+        $ ROOT
+        $ lookup
+        $ project
+        
+*/
 
