@@ -100,5 +100,67 @@ export const addProduct = asyncHandler(async (req, res) => {
 });
 
 
+/*********************************************************
+ * @GET_ALL_PRODUCTS
+ * @route http://localhost:5000/api/v1/product
+ * @description get all products
+ * @parameters  none
+ * @returns array of product objects
+ * ******************************************************/
+
+export const getAllProducts = asyncHandler(async (req, res) => {
+    
+        try {
+            const products = await Product.find()
+            if(!products){
+                throw new CustomError('Products could not be found', 404)
+            }
+            res.status(200).json({
+                success: true,
+                products
+    
+            })
+            
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({
+                success: false,
+                error: error.message || `something went wrong` // error.message is the message property of the error object
+            })
+            
+        }
+    });
+
+/*********************************************************
+ * @GET_PRODUCT_BY_ID
+ * @route http://localhost:5000/api/v1/product/:id
+ * @description get a product by id
+ * @parameters  id
+ * @returns product object
+ * ******************************************************/
+
+export const getProductById = asyncHandler(async (req, res) => {
+        
+            try {
+                const product = await Product.findById(req.params.id)
+                if(!product){
+                    throw new CustomError('Product could not be found', 404)
+                }
+                res.status(200).json({
+                    success: true,
+                    product
+        
+                })
+                
+            } catch (error) {
+                console.log(error)
+                res.status(400).json({
+                    success: false,
+                    error: error.message || `something went wrong` // error.message is the message property of the error object
+                })
+                
+            }
+        });
+
 
 
